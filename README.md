@@ -1,47 +1,116 @@
-![Banner image](https://user-images.githubusercontent.com/10284570/173569848-c624317f-42b1-45a6-ab09-f0ea3c247648.png)
+# n8n EXIF Reader Node
 
-# n8n-nodes-starter
+A custom n8n node to extract EXIF metadata from images.
 
-This repo contains example nodes to help you get started building your own custom integrations for [n8n](https://n8n.io). It includes the node linter and other dependencies.
+## Features
 
-To make your custom node available to the community, you must create it as an npm package, and [submit it to the npm registry](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry).
+- Extract EXIF data from images in binary format or via URL
+- Structured JSON output with organized metadata categories
+- Support for GPS coordinates (with decimal conversion)
+- Camera and lens information extraction
+- Exposure settings (aperture, shutter speed, ISO)
+- Timestamp handling with ISO 8601 conversion
+- Configurable output options
 
-If you would like your node to be available on n8n cloud you can also [submit your node for verification](https://docs.n8n.io/integrations/creating-nodes/deploy/submit-community-nodes/).
+## Installation
 
-## Prerequisites
+```bash
+npm install n8n-nodes-exif-reader
+```
 
-You need the following installed on your development machine:
+## Usage
 
-* [git](https://git-scm.com/downloads)
-* Node.js and npm. Minimum version Node 20. You can find instructions on how to install both using nvm (Node Version Manager) for Linux, Mac, and WSL [here](https://github.com/nvm-sh/nvm). For Windows users, refer to Microsoft's guide to [Install NodeJS on Windows](https://docs.microsoft.com/en-us/windows/dev-environment/javascript/nodejs-on-windows).
-* Install n8n with:
-  ```
-  npm install n8n -g
-  ```
-* Recommended: follow n8n's guide to [set up your development environment](https://docs.n8n.io/integrations/creating-nodes/build/node-development-environment/).
+### Input Sources
 
-## Using this starter
+The node supports two input methods:
 
-These are the basic steps for working with the starter. For detailed guidance on creating and publishing nodes, refer to the [documentation](https://docs.n8n.io/integrations/creating-nodes/).
+1. **Binary Data**: Read image data from a binary property in the input data
+2. **URL**: Download image directly from a URL
 
-1. [Generate a new repository](https://github.com/n8n-io/n8n-nodes-starter/generate) from this template repository.
-2. Clone your new repo:
-   ```
-   git clone https://github.com/<your organization>/<your-repo-name>.git
-   ```
-3. Run `npm i` to install dependencies.
-4. Open the project in your editor.
-5. Browse the examples in `/nodes` and `/credentials`. Modify the examples, or replace them with your own nodes.
-6. Update the `package.json` to match your details.
-7. Run `npm run lint` to check for errors or `npm run lintfix` to automatically fix errors when possible.
-8. Test your node locally. Refer to [Run your node locally](https://docs.n8n.io/integrations/creating-nodes/test/run-node-locally/) for guidance.
-9. Replace this README with documentation for your node. Use the [README_TEMPLATE](README_TEMPLATE.md) to get started.
-10. Update the LICENSE file to use your details.
-11. [Publish](https://docs.npmjs.com/packages-and-modules/contributing-packages-to-the-registry) your package to npm.
+### Configuration Options
 
-## More information
+- **Input Source**: Choose between binary data or URL input
+- **Binary Property**: Name of the binary property containing image data (for binary input)
+- **Image URL**: URL of the image to process (for URL input)
+- **Output Property**: Name of the property where EXIF data will be stored (default: "exif")
+- **Include GPS Data**: Whether to include GPS coordinates if available
+- **Include Image Size**: Whether to include image dimensions
+- **Convert Timestamps**: Whether to convert EXIF timestamps to ISO 8601 format
 
-Refer to our [documentation on creating nodes](https://docs.n8n.io/integrations/creating-nodes/) for detailed information on building your own nodes.
+### Output Structure
+
+The node outputs structured JSON with the following categories:
+
+```json
+{
+  "exif": {
+    "fileInfo": {
+      "fileName": "IMG_1234.jpg",
+      "fileSizeBytes": 2048576,
+      "fileSizeFormatted": "2 MB"
+    },
+    "imageSize": {
+      "width": 3024,
+      "height": 4032
+    },
+    "camera": {
+      "make": "Apple",
+      "model": "iPhone 12 Pro",
+      "software": "14.4"
+    },
+    "lens": {
+      "model": "iPhone 12 Pro back triple camera 5.1mm f/1.6",
+      "focalLength": "5.1mm"
+    },
+    "exposure": {
+      "shutterSpeed": "1/120",
+      "aperture": "f/1.6",
+      "iso": 64,
+      "mode": "Auto",
+      "flash": "Did not fire"
+    },
+    "gps": {
+      "latitude": 37.7749,
+      "longitude": -122.4194,
+      "latitudeDecimal": 37.7749,
+      "longitudeDecimal": -122.4194
+    },
+    "timestamp": {
+      "original": 1640995200,
+      "iso": "2022-01-01T12:00:00.000Z",
+      "formatted": "1/1/2022, 12:00:00 PM"
+    },
+    "raw": {
+      // Complete raw EXIF data
+    }
+  }
+}
+```
+
+## Use Cases
+
+- **Photo Management**: Organize photos by camera, date, or location
+- **Workflow Automation**: Trigger different flows based on image metadata
+- **Data Analysis**: Extract and analyze photography patterns
+- **Content Processing**: Enhance media workflows with metadata-driven decisions
+- **Location Services**: Use GPS data from images for mapping applications
+
+## Error Handling
+
+The node includes comprehensive error handling:
+- Validates input data availability
+- Handles network errors for URL downloads
+- Gracefully handles images without EXIF data
+- Supports "Continue on Fail" mode for batch processing
+
+## Development
+
+To work on this node locally:
+
+1. Clone the repository
+2. Run `npm install`
+3. Build with `npm run build`
+4. Test with `npm run lint`
 
 ## License
 

@@ -1,19 +1,25 @@
 {
-  "name": "n8n-nodes-<...>",
-  "version": "0.1.0",
-  "description": "",
+  "name": "n8n-nodes-exif-reader",
+  "version": "0.3.0",
+  "description": "n8n node to extract EXIF metadata from images",
   "keywords": [
-    "n8n-community-node-package"
+    "n8n-community-node-package",
+    "exif",
+    "metadata",
+    "images",
+    "photography",
+    "gps",
+    "camera"
   ],
   "license": "MIT",
-  "homepage": "",
+  "homepage": "https://github.com/Dos2Locos/n8n-exif-reader#readme",
   "author": {
-    "name": "",
-    "email": ""
+    "name": "César Gómez Antonio",
+    "email": "cesar@dos2locos.es"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/<...>/n8n-nodes-<...>.git"
+    "url": "git+https://github.com/Dos2Locos/n8n-exif-reader.git"
   },
   "engines": {
     "node": ">=20.15"
@@ -22,26 +28,22 @@
   "scripts": {
     "build": "npx rimraf dist && tsc && gulp build:icons",
     "dev": "tsc --watch",
-    "format": "prettier nodes credentials --write",
-    "lint": "eslint nodes credentials package.json",
-    "lintfix": "eslint nodes credentials package.json --fix",
-    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes credentials package.json"
+    "format": "prettier nodes --write",
+    "lint": "eslint nodes package.json",
+    "lintfix": "eslint nodes package.json --fix",
+    "prepublishOnly": "npm run build && npm run lint -c .eslintrc.prepublish.js nodes package.json"
   },
   "files": [
     "dist"
   ],
   "n8n": {
     "n8nNodesApiVersion": 1,
-    "credentials": [
-      "dist/credentials/ExampleCredentialsApi.credentials.js",
-      "dist/credentials/HttpBinApi.credentials.js"
-    ],
     "nodes": [
-      "dist/nodes/ExampleNode/ExampleNode.node.js",
-      "dist/nodes/HttpBin/HttpBin.node.js"
+      "dist/nodes/ExifReader/ExifReader.node.js"
     ]
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "@typescript-eslint/parser": "~8.32.0",
     "eslint": "^8.57.0",
     "eslint-plugin-n8n-nodes-base": "^1.16.3",
@@ -51,5 +53,8 @@
   },
   "peerDependencies": {
     "n8n-workflow": "*"
+  },
+  "dependencies": {
+    "exif-parser": "^0.1.12"
   }
 }
